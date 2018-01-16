@@ -6,7 +6,7 @@ var rename = require('gulp-rename');
 var browserify = require('gulp-browserify');
 
 gulp.task("default", function () {
-    return gulp.src(["./index.js"])
+    return gulp.src(["./browser.js"])
         .pipe(browserify({
             insertGlobals: true,
             debug: !gulp.env.production
