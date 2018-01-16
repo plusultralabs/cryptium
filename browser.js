@@ -1,0 +1,1 @@
+window.Cryptium = require('./src/cryptium');
