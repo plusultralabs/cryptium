@@ -95,41 +95,38 @@ function createCipher(password, iv_input) {
   }
 }
 /**
- * Encrypts an email and it's content
+ * Encrypts an Notification and it's content
  * 
- * @param  {string} email
+ * @param  {string} destination
  * @param  {string} content
  * @param  {string} pub
  */
-function encryptEmail(email, content, pub) {
+function encryptNotification(destination, content, pub) {
   var encrypt = createEncrypter(pub, null);
-
-  var encryptedEmail = encrypt.encrypt(email);
-  console.log(encryptedEmail);
+  var encryptedDestination = encrypt.encrypt(destination);
   // encrypt content using AES
-  var AESCipher = createCipher(email);
+  var AESCipher = createCipher(destination);
   var iv = AESCipher.getIv();
   return AESCipher.encrypt(content).then(encryptedContent => {
-    return { email: encryptedEmail, iv: iv, content: encryptedContent };
+    return { destination: encryptedDestination, iv: iv, content: encryptedContent };
   });
 }
 
 /**
- * decrypt an email
+ * decrypt an Notification
  * 
- * @param  {string} email
+ * @param  {string} destination
  * @param  {string} content
  * @param  {string} iv
  * @param  {string} priv
  */
-function decryptEmail(email, content, iv, priv) {
+function decryptNotification(destination, content, iv, priv) {
   var encrypt = createEncrypter(null, priv);
-  var decryptedEmail = encrypt.decrypt(email);
-  console.log(decryptedEmail);
+  var decryptedNotification = encrypt.decrypt(destination);
   // encrypt content using AES
-  var AESCipher = createCipher(decryptedEmail, iv);
+  var AESCipher = createCipher(decryptedNotification, iv);
   return AESCipher.decrypt(content).then(decryptedContent => {
-    return { email: decryptedEmail, content: decryptedContent };
+    return { destination: decryptedNotification, content: decryptedContent };
   });
 }
 
@@ -140,6 +137,6 @@ module.exports = {
   removeSalt: removeSalt,
   createEncrypter: createEncrypter,
   createCipher: createCipher,
-  encryptEmail: encryptEmail,
-  decryptEmail: decryptEmail
+  encryptNotification: encryptNotification,
+  decryptNotification: decryptNotification
 };
