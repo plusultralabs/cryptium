@@ -19,7 +19,7 @@ function Browser_cipher(password, iv_string) {
  * Init key
  */
 Browser_cipher.prototype.getKey = function() {
-  return crypto.subtle.digest(BROWSER_HASH, this.pwUint8).then(pwHash => {
+  return crypto.subtle.digest(BROWSER_HASH, this.pwUint8).then(function(pwHash)  {
     this.pwHash = pwHash;
     this.alg = {
       name: BROWSER_ALG,
@@ -27,7 +27,7 @@ Browser_cipher.prototype.getKey = function() {
     };
     return crypto.subtle
       .importKey("raw", this.pwHash, this.alg, false, ["encrypt", "decrypt"])
-      .then(key => {
+      .then(function(key)  {
         this.key = key;
         return this;
       });
@@ -40,11 +40,11 @@ Browser_cipher.prototype.getKey = function() {
  */
 Browser_cipher.prototype.encrypt = function(toEncrypt) {
   return this.getKey()
-    .then(() => {
+    .then(function()  {
       var ptUtf8 = new TextEncoder().encode(toEncrypt);
       return crypto.subtle.encrypt(this.alg, this.key, ptUtf8);
     })
-    .then(arrayBuffer => {
+    .then(function(arrayBuffer)  {
       return toBase64(arrayBuffer);
     });
 };
@@ -54,11 +54,11 @@ Browser_cipher.prototype.encrypt = function(toEncrypt) {
  * @param {string} toDecrypt string to be decrypted
  */
 Browser_cipher.prototype.decrypt = function(toDecrypt) {
-  return this.getKey().then(() => {
+  return this.getKey().then(function()  {
     ctBuffer = fromBase64(toDecrypt);
     return crypto.subtle
       .decrypt(this.alg, this.key, ctBuffer)
-      .then(ptBuffer => {
+      .then(function(ptBuffer ) {
         return (plaintext = new TextDecoder().decode(ptBuffer));
       });
   });
@@ -83,15 +83,17 @@ function Browser_createIv() {
 function toBase64(arrayBuffer) {
   return btoa(
     new Uint8Array(arrayBuffer).reduce(
-      (data, byte) => data + String.fromCharCode(byte),
+      function(data, byte)  {return data + String.fromCharCode(byte)},
       ""
     )
   );
 }
 // from base 64 to uint8 array
 function fromBase64(base64_string) {
-  return Uint8Array.from(atob(base64_string), character =>
-    character.charCodeAt(0)
+  return Uint8Array.from(atob(base64_string), function(character){
+    return character.charCodeAt(0)
+  } 
+    
   );
 }
 
@@ -115,7 +117,7 @@ Node_aes_cipher.prototype.encrypt = function(toEncrypt) {
   var cipher = crypto.createCipheriv(NODE_ALG, this.key, this.iv);
   var encrypted = cipher.update(toEncrypt, "utf8", "base64");
   encrypted += cipher.final("base64");
-  return new Promise((res, rej) => {
+  return new Promise(function (res, rej)  {
     res(encrypted);
   });
 };
@@ -130,7 +132,7 @@ Node_aes_cipher.prototype.decrypt = function(toDecrypt) {
   var decipher = crypto.createDecipheriv(NODE_ALG, this.key, this.iv);
   var decrypted = decipher.update(toDecrypt, "base64", "utf-8");
   decrypted += decipher.final("utf-8");
-  return new Promise((res, rej) => {
+  return new Promise(function (res, rej)  {
     res(decrypted);
   });
 };
