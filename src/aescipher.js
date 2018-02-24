@@ -155,8 +155,8 @@ function Node_createIv() {
 }
 
 module.exports = {
-  Node_aes_cipher,
-  Browser_cipher,
-  Browser_createIv,
-  Node_createIv
+  Node_aes_cipher : Node_aes_cipher,
+  Browser_cipher : Browser_cipher,
+  Browser_createIv : Browser_createIv,
+  Node_createIv : Node_createIv
 };
