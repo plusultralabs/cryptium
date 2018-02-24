@@ -79,18 +79,18 @@ test('it encrypts and decrypts a full email structure',(t)=>{
     t.plan(4)
     let email = "test@emailservice.com"
     let content = "<h1>This is some tests for encryption</h1><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, \n sunt in culpa qui officia deserunt mollit anim id est laborum. </p>"
-    cryptium.encryptEmail(email,content,PUBKEY).then((encrypt)=>{
-        cryptium.decryptEmail(encrypt.email,encrypt.content,encrypt.iv,PRIVKEY).then(decrypted=>{
-            t.equal(email,decrypted.email,'correct email handling')
+    cryptium.encryptNotification(email,content,PUBKEY).then((encrypt)=>{
+        cryptium.decryptNotification(encrypt.destination,encrypt.content,encrypt.iv,PRIVKEY).then(decrypted=>{
+            t.equal(email,decrypted.destination,'correct email handling')
             t.equal(content,decrypted.content,'correct content handling')
         })
     })
     // from browser
     let browser_email ="test@email.com"
     let browser_content ="this a plain text test !@£$%^&*()/\n"
-    browser_encrypt = {email: "1IU4Nr3KuYz9KbA3BQyqwbSDF1nBh/2Ses5pKyRpng1GhOBAlFVk+iBieaJQKMK3l7pM/Fs32Om3+rJlgh05kYFBELuFRGcYv5uaw2tyOiZDmcl0KtA7kPI1+baR0U6GY4e6X3qhZ7rm4T18ggbJMXOsKFi5p+0LMk3dF1/DqBo=", iv: "CLAm16ZnOmfM+uf29MFGvg==", content: "ShzGM8U8w2F0zTe3s4k1Uk+st/djSxYH7ZW6tVRBAF34btNfjgdJBCHx77oABeTh"}
-    cryptium.decryptEmail(browser_encrypt.email,browser_encrypt.content,browser_encrypt.iv,PRIVKEY).then(decrypted=>{
-            t.equal(browser_email,decrypted.email,'correct email handling from client')
+    browser_encrypt = {destination: "1IU4Nr3KuYz9KbA3BQyqwbSDF1nBh/2Ses5pKyRpng1GhOBAlFVk+iBieaJQKMK3l7pM/Fs32Om3+rJlgh05kYFBELuFRGcYv5uaw2tyOiZDmcl0KtA7kPI1+baR0U6GY4e6X3qhZ7rm4T18ggbJMXOsKFi5p+0LMk3dF1/DqBo=", iv: "CLAm16ZnOmfM+uf29MFGvg==", content: "ShzGM8U8w2F0zTe3s4k1Uk+st/djSxYH7ZW6tVRBAF34btNfjgdJBCHx77oABeTh"}
+    cryptium.decryptNotification(browser_encrypt.destination,browser_encrypt.content,browser_encrypt.iv,PRIVKEY).then(decrypted=>{
+            t.equal(browser_email,decrypted.destination,'correct email handling from client')
             t.equal(browser_content,decrypted.content,'correct content handling from client')
     })
 })

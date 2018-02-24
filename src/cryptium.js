@@ -107,7 +107,7 @@ function encryptNotification(destination, content, pub) {
   // encrypt content using AES
   var AESCipher = createCipher(destination);
   var iv = AESCipher.getIv();
-  return AESCipher.encrypt(content).then(encryptedContent => {
+  return AESCipher.encrypt(content).then(function(encryptedContent) {
     return { destination: encryptedDestination, iv: iv, content: encryptedContent };
   });
 }
@@ -125,7 +125,7 @@ function decryptNotification(destination, content, iv, priv) {
   var decryptedNotification = encrypt.decrypt(destination);
   // encrypt content using AES
   var AESCipher = createCipher(decryptedNotification, iv);
-  return AESCipher.decrypt(content).then(decryptedContent => {
+  return AESCipher.decrypt(content).then(function(decryptedContent ) {
     return { destination: decryptedNotification, content: decryptedContent };
   });
 }
