@@ -1,5 +1,5 @@
 function isNode() {
-  return typeof window === "undefined";
+  return typeof process === 'object';
 }
 
 // Browser encryption decryption
