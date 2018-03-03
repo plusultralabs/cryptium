@@ -12,13 +12,17 @@ declare namespace Cryptium {
         destination:string, 
         content:string, 
         pub:string
-     ): Encrypted;
+    ): Promise<Encrypted>;
+    export function decryptDestination(
+        destination:string,
+        priv:string
+    ): Promise<string>;
      export function decryptNotification(
          destination:string,
          content:string,
          iv:string,
          priv:string
-    ): Decrypted;
+    ): Promise<Decrypted>;
  }
 
 declare module "cryptium" {

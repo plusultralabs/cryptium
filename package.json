@@ -1,6 +1,6 @@
 {
   "name": "cryptium",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "The library to encrypt emails",
   "main": "index.js",
   "types": "index.d.ts",

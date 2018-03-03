@@ -113,6 +113,19 @@ function encryptNotification(destination, content, pub) {
 }
 
 /**
+ * Decrypt just the destination with no content
+ * 
+ * @param {any} destination 
+ * @param {any} priv 
+ * @returns The decrypted destination.
+ */
+function decryptDestination(destination, priv){
+  var encrypt = createEncrypter(null, priv);
+  var decryptedNotification = encrypt.decrypt(destination);
+  return Promise.resolve(decryptedNotification)
+}
+
+/**
  * decrypt an Notification
  * 
  * @param  {string} destination
@@ -138,5 +151,6 @@ module.exports = {
   createEncrypter: createEncrypter,
   createCipher: createCipher,
   encryptNotification: encryptNotification,
-  decryptNotification: decryptNotification
+  decryptNotification: decryptNotification,
+  decryptDestination : decryptDestination
 };
